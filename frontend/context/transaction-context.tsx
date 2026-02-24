@@ -30,7 +30,7 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
 
   // 🔥 SINGLE SOURCE OF TRUTH — load function
   const loadTransactions = async () => {
-    const res = await fetch("http://localhost:8000/transactions")
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`)
     const data = await res.json()
     setTransactions(data)
   }
@@ -42,7 +42,7 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
 
   // 🔥 ADD
   const addTransaction = useCallback(async (newTransaction) => {
-  await fetch("http://localhost:8000/transactions/add", {
+  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/add`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
 
   // 🔥 DELETE
   const deleteTransaction = useCallback(async (id: number) => {
-    await fetch(`http://localhost:8000/transactions/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/${id}`, {
       method: "DELETE",
     })
 
@@ -72,7 +72,7 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
 
   // 🔥 UPDATE
   const updateTransaction = useCallback(async (id: number, updates) => {
-    await fetch(`http://localhost:8000/transactions/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
