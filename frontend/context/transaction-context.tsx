@@ -42,16 +42,24 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
 
   // 🔥 ADD
   const addTransaction = useCallback(async (newTransaction) => {
-    await fetch("http://localhost:8000/transactions/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newTransaction),
-    })
+  await fetch("http://localhost:8000/transactions/add", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
 
-    await loadTransactions()   // 🔥 CRITICAL
-  }, [])
+    // 🔥 CRITICAL FIX — send snake_case
+    body: JSON.stringify({
+      amount: newTransaction.amount,
+      description: newTransaction.description,
+      category: newTransaction.category,
+      date: newTransaction.date,
+      payment_method: newTransaction.paymentMethod
+    }),
+  })
+
+  await loadTransactions()   // reload state
+}, [])
 
   // 🔥 DELETE
   const deleteTransaction = useCallback(async (id: number) => {

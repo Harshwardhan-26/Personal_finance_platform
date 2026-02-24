@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from ..database import SessionLocal
 from ..models import Transaction
 from ..schemas import TransactionCreate
+from datetime import datetime
+
 
 router = APIRouter()
 
@@ -20,7 +22,7 @@ def add_transaction(data: TransactionCreate, db: Session = Depends(get_db)):
         amount=data.amount,
         description=data.description,
         category=data.category,
-        date=data.date,
+        date=datetime.strptime(data.date, "%Y-%m-%d").date(),
         payment_method=data.payment_method
     )
 
@@ -53,7 +55,7 @@ def update_transaction(txn_id: int, data: TransactionCreate, db: Session = Depen
     txn.amount = data.amount
     txn.description = data.description
     txn.category = data.category
-    txn.date = data.date
+    txn.date = datetime.strptime(data.date, "%Y-%m-%d").date()
     txn.payment_method = data.payment_method
 
     db.commit()
