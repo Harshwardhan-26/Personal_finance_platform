@@ -8,8 +8,8 @@ Built with a production-ready architecture using Next.js, FastAPI, and SQL datab
 
 ## 🚀 Live Demo
 
-🌐 Frontend: https://YOUR-VERCEL-URL.vercel.app  
-🔗 Backend API: https://YOUR-RENDER-URL.onrender.com
+🌐 Frontend: [https://YOUR-VERCEL-URL.vercel.app  ](https://personal-finance-platform-4yj3izr0p-silvias-projects-654d9a95.vercel.app/)
+🔗 Backend API: [https://YOUR-RENDER-URL.onrender.com](https://personal-finance-platform.onrender.com/)
 
 ---
 
