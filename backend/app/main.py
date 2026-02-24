@@ -4,6 +4,8 @@ from .routes import users
 from .routes import transactions
 from fastapi.middleware.cors import CORSMiddleware
 from .routes import analytics
+from . import models
+
 
 app = FastAPI()
 
