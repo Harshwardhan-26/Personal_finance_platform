@@ -1,18 +1,46 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Trash2 } from 'lucide-react'
 import { LayoutWrapper } from '@/components/layout-wrapper'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { useTransactions } from '@/context/transaction-context'
+
+type Transaction = {
+  id: number
+  description: string
+  amount: number
+  category: string
+  date: string
+  paymentMethod?: string
+  type?: 'income' | 'expense'
+}
 
 export default function TransactionsPage() {
-  const { transactions, deleteTransaction } = useTransactions()
-
+  const [transactions, setTransactions] = useState<Transaction[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 5
+
+  // ✅ LOAD FUNCTION (outside useEffect)
+  const loadTransactions = async () => {
+    const res = await fetch("http://localhost:8000/transactions")
+    const data = await res.json()
+    setTransactions(data)
+  }
+
+  // ✅ RUN ON PAGE LOAD
+  useEffect(() => {
+    loadTransactions()
+  }, [])
+
+  // ✅ DELETE AND REFRESH
+  const deleteTransaction = async (id: number) => {
+    await fetch(`http://localhost:8000/transactions/${id}`, {
+      method: "DELETE",
+    })
+    await loadTransactions()
+  }
 
   // Filter
   const filtered = transactions.filter((tx) =>

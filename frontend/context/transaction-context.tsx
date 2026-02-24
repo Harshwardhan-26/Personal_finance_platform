@@ -30,7 +30,7 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
 
   // 🔥 SINGLE SOURCE OF TRUTH — load function
   const loadTransactions = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`)
+    const res = await fetch("http://localhost:8000/transactions")
     const data = await res.json()
     setTransactions(data)
   }
@@ -42,28 +42,20 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
 
   // 🔥 ADD
   const addTransaction = useCallback(async (newTransaction) => {
-  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/add`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    await fetch("http://localhost:8000/transactions/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newTransaction),
+    })
 
-    // 🔥 CRITICAL FIX — send snake_case
-    body: JSON.stringify({
-      amount: newTransaction.amount,
-      description: newTransaction.description,
-      category: newTransaction.category,
-      date: newTransaction.date,
-      payment_method: newTransaction.paymentMethod
-    }),
-  })
-
-  await loadTransactions()   // reload state
-}, [])
+    await loadTransactions()   // 🔥 CRITICAL
+  }, [])
 
   // 🔥 DELETE
   const deleteTransaction = useCallback(async (id: number) => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/${id}`, {
+    await fetch(`http://localhost:8000/transactions/${id}`, {
       method: "DELETE",
     })
 
@@ -72,7 +64,7 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
 
   // 🔥 UPDATE
   const updateTransaction = useCallback(async (id: number, updates) => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/${id}`, {
+    await fetch(`http://localhost:8000/transactions/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
